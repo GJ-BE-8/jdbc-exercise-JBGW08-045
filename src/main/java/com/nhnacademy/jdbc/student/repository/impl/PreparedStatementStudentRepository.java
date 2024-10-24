@@ -14,7 +14,7 @@ public class PreparedStatementStudentRepository implements StudentRepository {
     @Override
     public int save(Student student){
         //todo#1 학생 등록
-        String q = "insert into jdbc_students values(?,?,?,?)";
+        String q = "insert into jdbc_students(id,name,gender,age) values(?,?,?,?)";
 
         try(Connection connection = DbUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(q)){
