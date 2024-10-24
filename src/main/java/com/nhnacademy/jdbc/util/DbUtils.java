@@ -1,8 +1,6 @@
 package com.nhnacademy.jdbc.util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DbUtils {
     public DbUtils(){
@@ -13,7 +11,9 @@ public class DbUtils {
         Connection connection = null;
         try {
             //todo connection.
-            connection = DriverManager.getConnection("jdbc:mysql://ip:3306/{database}","user_name","password");
+            connection = DriverManager.getConnection("jdbc:mysql://ip:3306/nhn_academy_45","nhn_academy_45","2pXxZ4OY@]u58-l3");
+            Statement statement = connection.createStatement();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
