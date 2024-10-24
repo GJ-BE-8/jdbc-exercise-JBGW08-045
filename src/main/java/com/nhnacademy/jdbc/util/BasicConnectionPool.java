@@ -12,6 +12,8 @@ public class BasicConnectionPool  {
     private final String password;
     private final int maximumPoolSize;
     private final Queue<Connection> connections;
+    private final String driverClassName;
+
 
     public BasicConnectionPool(String driverClassName, String jdbcUrl, String username, String password, int maximumPoolSize)  {
 
@@ -19,6 +21,7 @@ public class BasicConnectionPool  {
         this.username = username;
         this.password = password;
         this.maximumPoolSize = maximumPoolSize;
+        this.driverClassName = driverClassName;
         connections = new LinkedList<>();
 
         checkDriver();
@@ -28,10 +31,19 @@ public class BasicConnectionPool  {
     private void checkDriver(){
         //todo#1 driverClassName에 해당하는 class가 존재하는지 check합니다.
         //존재하지 않는다면 RuntimeException 예외처리.
+        Class cls = null;
+        try {
+            cls = Class.forName(driverClassName);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void initialize(){
         //todo#2 maximumPoolSize만큼 Connection 객체를 생성해서 Connection Pool에 등록합니다.
+        for(int i=0; i<maximumPoolSize; i++) {
+            Connection connection;
+        }
     }
 
     public Connection getConnection() throws InterruptedException {
