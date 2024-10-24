@@ -13,6 +13,8 @@ public class BasicConnectionPool  {
     private final int maximumPoolSize;
     private final Queue<Connection> connections;
     private final String driverClassName;
+    private static int activeConnections = 0;
+
 
 
     public BasicConnectionPool(String driverClassName, String jdbcUrl, String username, String password, int maximumPoolSize)  {
@@ -42,26 +44,52 @@ public class BasicConnectionPool  {
     private void initialize(){
         //todo#2 maximumPoolSize만큼 Connection 객체를 생성해서 Connection Pool에 등록합니다.
         for(int i=0; i<maximumPoolSize; i++) {
-            Connection connection;
+            Connection connection = null;
+            try {
+                //todo#0 {ip},{database},{username},{password} 설정합니다.
+                connection = DriverManager.getConnection("jdbc:mysql://133.186.241.167:3306/nhn_academy_45","nhn_academy_45","2pXxZ4OY@]u58-l3");
+                connections.add(connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
     public Connection getConnection() throws InterruptedException {
         //todo#3 Connection Pool에 connection이 존재하면 반환하고 비어있다면 Connection Pool에 Connection이 존재할 때 까지 대기합니다.
-        return null;
+        synchronized (this){
+            while(connections.isEmpty() || activeConnections >= maximumPoolSize) {
+                wait();
+            }
+            activeConnections++;
+            return connections.poll();
+        }
+
     }
 
     public void releaseConnection(Connection connection) {
         //todo#4 작업을 완료한 Connection 객체를 Connection Pool에 반납 합니다.
+        synchronized (this) {
+            connections.add(connection);
+            notifyAll();
+            activeConnections--;
+
+        }
+
     }
 
     public int getUsedConnectionSize(){
         //todo#5 현재 사용중인 Connection 객체 수를 반환합니다.
-        return 0;
+        synchronized (this) {
+            return activeConnections;
+        }
     }
 
     public void distory() throws SQLException {
         //todo#6 Connection Pool에 등록된 Connection을 close 합니다.
-
+        for(Connection connection : connections) {
+            connection.close();
+        }
     }
 }
