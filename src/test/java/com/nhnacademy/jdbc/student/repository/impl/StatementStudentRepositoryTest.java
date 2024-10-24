@@ -43,6 +43,7 @@ class StatementStudentRepositoryTest {
     void save() {
         Student newStudent = new Student("student100","학생100", Student.GENDER.M,30);
         int result = studentRepository.save(newStudent);
+        log.info("{}", studentRepository.findById(newStudent.getId()).get().getId());
         Assertions.assertEquals(1,result);
     }
 
@@ -51,7 +52,7 @@ class StatementStudentRepositoryTest {
     @DisplayName("findById-student1")
     void findById() {
         Optional<Student> studentOptional = studentRepository.findById("student1");
-        log.info("student:{}", studentOptional.get());
+        log.info("student:{}", studentOptional.get().getId());
 
         Assertions.assertAll(
                 ()->Assertions.assertEquals("student1",studentOptional.get().getId()),
@@ -66,6 +67,7 @@ class StatementStudentRepositoryTest {
     @DisplayName("findById-marco10000")
     void findById_10000(){
         Optional<Student> studentOptional = studentRepository.findById("student10000");
+
         Assertions.assertFalse(studentOptional.isPresent());
     }
 

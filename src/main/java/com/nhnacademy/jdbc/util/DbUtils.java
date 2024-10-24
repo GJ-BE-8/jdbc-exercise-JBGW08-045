@@ -11,7 +11,9 @@ public class DbUtils {
         Connection connection = null;
         try {
             //todo connection.
-            connection = DriverManager.getConnection("jdbc:mysql://ip:133.186.241.167/nhn_academy_45","nhn_academy_45","2pXxZ4OY@]u58-l3");
+           // connection = DriverManager.getConnection("jdbc:mysql://ip:133.186.241.167/nhn_academy_45","nhn_academy_45","2pXxZ4OY@]u58-l3");
+            connection = DriverManager.getConnection("jdbc:mysql://133.186.241.167:3306/nhn_academy_45","nhn_academy_45","2pXxZ4OY@]u58-l3");
+
             Statement statement = connection.createStatement();
 
         } catch (SQLException e) {
