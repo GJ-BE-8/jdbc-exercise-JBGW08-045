@@ -88,7 +88,21 @@ public class StatementUserRepository implements UserRepository {
     @Override
     public int updateUserPasswordByUserId(String userId, String userPassword) {
         //todo#4-User 비밀번호 변경
-        return 0;
+        String q = String.format("update jdbc_users set user_password='%s' where user_id = '%s' ",
+                userPassword,
+                userId
+        );
+        log.debug("update userpassword by id, q: {}", q);
+        try(Connection connection = DbUtils.getConnection();
+            Statement statement = connection.createStatement()){
+
+            int result = statement.executeUpdate(q);
+            log.debug("update userpassword by id, result: {}", result);
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
