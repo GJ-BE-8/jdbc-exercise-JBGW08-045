@@ -69,8 +69,6 @@ public class AccountRepositoryImpl implements AccountRepository {
             if(resultSet.next()){
                 count = resultSet.getInt(1);
             }
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
